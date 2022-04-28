@@ -1,8 +1,8 @@
 const inquirer = require('inquirer');
-const mysql = require('mysql');
-const mysql2 = require('mysql2');
+// const mysql = require('mysql');
+// const mysql2 = require('mysql2');
 const constable = require('console.table');
-const connect = require('./config/connection');
+const connection = require('./config/connection');
 
 connection.connect((err) => {
     if (err) throw error;
@@ -296,4 +296,9 @@ function addEmployee() {
             })
         }
     })
+}
+
+function Quit() {
+    console.log('Adios');
+    process.exit();
 }
