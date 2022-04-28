@@ -74,7 +74,7 @@ function viewDepartments() {
     db.query(req, function(err, res) {
         if (err) throw err;
         console.log("Viewing All Departments");
-        console.table(res);
+        constable(res);
         inquirer.prompt([
             {
                 type: 'list',
@@ -103,7 +103,7 @@ function viewTitle() {
     db.query(req, function(err, res) {
         if (err) throw err;
         console.log("Viewing All Titles");
-        console.table(res);
+        constable(res);
         inquirer.prompt([
             {
                 type: 'list',
@@ -132,7 +132,7 @@ function viewEmployees() {
     db.query(req, function(err, res) {
         if (err) throw err;
         console.log("Viewing All Employees");
-        console.table(res);
+        constable(res);
         inquirer.prompt([
             {
                 type: 'list',
@@ -153,5 +153,147 @@ function viewEmployees() {
                         Quit();
             }
         })
+    })
+}
+
+function addDepartment() {
+    console.log("Which department would you like to Create?");
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Enter New Department Name',
+            name: 'department_name'
+        }
+    ])
+    .then(function (res) {
+        connection.query('INSERT INTO department(department_name) VALUES (?)',
+        [res.department_name]), 
+        function(err, res) {
+            if (err) throw err;
+            constable(res);
+            inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'choice',
+                    message: 'select an option',
+                    choices: [
+                        'Return to Main Menu',
+                        'Quit'
+                    ]
+                }
+            ])
+            .then((answer) => {
+                switch (answer.choice){
+                    case 'Main Menu':
+                        start();
+                        break;
+                        case 'Quit':
+                            Quit();
+                }
+            })
+        }
+    })
+}
+
+function addTitle() {
+    console.log("Which title would you like to Create?");
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Enter New Title Name',
+            name: 'title'
+        },
+        {
+            type: 'input',
+            message: 'Enter Salary',
+            name: 'salary'
+        },
+        {
+            type: 'input',
+            message: 'Enter Department ID',
+            name: 'department_id'
+        }
+    ])
+    .then(function (res) {
+        connection.query('INSERT INTO job_title(title, salary, department_id) VALUES (?,?,?)',
+        [res.title, res.salary, res.department_id]), 
+        function(err, res) {
+            if (err) throw err;
+            constable(res);
+            inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'choice',
+                    message: 'select an option',
+                    choices: [
+                        'Return to Main Menu',
+                        'Quit'
+                    ]
+                }
+            ])
+            .then((answer) => {
+                switch (answer.choice){
+                    case 'Main Menu':
+                        start();
+                        break;
+                        case 'Quit':
+                            Quit();
+                }
+            })
+        }
+    })
+}
+
+function addEmployee() {
+    console.log("Please enter employee information you wish to create");
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Enter New Employee First Name',
+            name: 'first_name'
+        },
+        {
+            type: 'input',
+            message: 'Enter New Employee Last Name',
+            name: 'last_name'
+        },
+        {
+            type: 'input',
+            message: 'Enter New Employee Job Title',
+            name: 'job_title_id'
+        },
+        {
+            type: 'input',
+            message: 'Enter New Employee Manager',
+            name: 'manager_id'
+        }
+    ])
+    .then(function (res) {
+        connection.query('INSERT INTO employee(first_name, last_name, job_title_id, manager_id) VALUES (?,?,?,?)',
+        [res.first_name, res.last_name, res.job_title_id, res.manager_id]), 
+        function(err, res) {
+            if (err) throw err;
+            constable(res);
+            inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'choice',
+                    message: 'select an option',
+                    choices: [
+                        'Return to Main Menu',
+                        'Quit'
+                    ]
+                }
+            ])
+            .then((answer) => {
+                switch (answer.choice){
+                    case 'Main Menu':
+                        start();
+                        break;
+                        case 'Quit':
+                            Quit();
+                }
+            })
+        }
     })
 }
