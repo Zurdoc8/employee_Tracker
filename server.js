@@ -12,20 +12,22 @@ connection.connect((err) => {
 });
 
 const promptUser = () => {
-    inquirer.prompt([{
-        name: 'choices',
-        type: 'list',
-        message: 'Please select an action from the following options:',
-        choices: [
-            'View Departments',
-            'View Title',
-            'View Employees',
-            'Add Department',
-            'Add Title',
-            'Add Employee',
-            'EXIT HERE'
-        ]
-    }])
+    inquirer.prompt([
+        {
+            name: 'choices',
+            type: 'list',
+            message: 'Please select an action from the following options:',
+            choices: [
+                'View Departments',
+                'View Title',
+                'View Employees',
+                'Add Department',
+                'Add Title',
+                'Add Employee',
+                'EXIT HERE'
+            ],
+        }
+    ])
     .then ((answers) => {
         switch (answers.choice) {
 
@@ -57,60 +59,42 @@ const promptUser = () => {
 
                 addEmployee();
                 break;
-            
-        }   
 
-        if (choices === 'VIEW ALL DEPARTMENTS') {
-            showAllEmployees();
-          }
-    
-          if (choices === 'SHOW ALL DEPARTMENTS') {
-            showAllDepartments();
-          }
-    
-          if (choices === 'VIEW EMPLOYEE BY DEPARTMENT') {
-            viewEmployeeByDepartment();
-          }
-    
-          if (choices === 'ADD EMPLOYEE') {
-            addEmployee();
-          }
-    
-          if (choices === 'DELETE EMPLOYEE') {
-            deleteEmployee();
-          }
-    
-          if (choices === 'UPDATE EMPLOYEE') {
-            updateEmployee();
-          }
-    
-          if (choices === 'UPDATE MANAGER') {
-            updateManager();
-          }
-    
-          if (choices === 'SHOW JOB TITLES') {
-            showJob_titles();
-          }
-    
-          if (choices === 'ADD JOB TITLE') {
-            addJob_title();
-          }
-    
-          if (choices === 'DELETE JOB TITLE') {
-            deleteJob_title();
-          }
-    
-          if (choices === 'ADD DEPARTMENT') {
-            addDepartment();
-          }
-    
-          if (choices === 'REMOVE DEPARTMENT') {
-            removeDepartment();
-          }
-    
-          if (choices === 'EXIT HERE') {
-            connection.end();
-          }
-        });
-    };
+            case 'EXIT HERE':
+
+                exitHere();
+                break;
+        }
+    }
+)
+}
+
+function viewDepartments() {
+    const req = "SELECT * FROM department";
+    db.query(req, function(err, res) {
+        if (err) throw err;
+        console.log("Viewing All Departments");
+        console.table(res);
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'choice',
+                message: 'select an option',
+                choices: [
+                    'Return to Main Menu',
+                    'Quit'
+                ]
+            }
+        ])
+        .then((answer) => {
+            switch (answer.choice){
+                case 'Main Menu':
+                    start();
+                    break;
+                    case 'Quit':
+                        Quit();
+            }
+        })
+    })
+}
 
