@@ -98,3 +98,60 @@ function viewDepartments() {
     })
 }
 
+function viewTitle() {
+    const req = "SELECT * FROM job_title";
+    db.query(req, function(err, res) {
+        if (err) throw err;
+        console.log("Viewing All Titles");
+        console.table(res);
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'choice',
+                message: 'select an option',
+                choices: [
+                    'Return to Main Menu',
+                    'Quit'
+                ]
+            }
+        ])
+        .then((answer) => {
+            switch (answer.choice){
+                case 'Main Menu':
+                    start();
+                    break;
+                    case 'Quit':
+                        Quit();
+            }
+        })
+    })
+}
+
+function viewEmployees() {
+    const req = "SELECT * FROM employees";
+    db.query(req, function(err, res) {
+        if (err) throw err;
+        console.log("Viewing All Employees");
+        console.table(res);
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'choice',
+                message: 'select an option',
+                choices: [
+                    'Return to Main Menu',
+                    'Quit'
+                ]
+            }
+        ])
+        .then((answer) => {
+            switch (answer.choice){
+                case 'Main Menu':
+                    start();
+                    break;
+                    case 'Quit':
+                        Quit();
+            }
+        })
+    })
+}
