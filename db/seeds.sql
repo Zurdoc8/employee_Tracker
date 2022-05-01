@@ -25,11 +25,11 @@ INSERT INTO employee (first_name, last_name, job_title_id, manager_id)
 VALUES 
 ( "Michael", "Scott", 1, NULL),
 ( "Dwight", "Schrute", 2, 1),
-( "James", "Halpert", 3, NULL),
+( "James", "Halpert", 3, 1),
 ( "Kevin", "Malone", 4, 3),
-( "Andy", "Bernard", 5, NULL),
+( "Andy", "Bernard", 5, 1),
 ( "Stanley", "Hudson", 6, 5),
-( "Ryan", "Howard", 7, NULL),
+( "Ryan", "Howard", 7, 1),
 ( "Kelly", "Kapoor", 8, 7),
-( "Angela", "Martin", 9, NULL),
+( "Angela", "Martin", 9, 1),
 ( "Oscar", "Martinez", 10, 9);

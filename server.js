@@ -50,6 +50,7 @@ const promptUser = () => {
 
                 viewEmployees();
                 break;
+
             case 'Add Department':
 
                 addDepartment();
@@ -78,7 +79,6 @@ const promptUser = () => {
 }
 
 function viewDepartments() {
-    console.log('error')
     const req = "SELECT * FROM department";
     db.query(req, function(err, res) {
         if (err) throw err;
@@ -92,12 +92,13 @@ function viewDepartments() {
                 choices: [
                     {name:'Return to Main Menu',
                     value:'menu'},
-                    'Quit'
+                    {name:'Quit',
+                    value:'Quit'}
                 ]
             }
         ])
-        .then((answer) => {
-            switch (answer.choices){
+        .then((answers) => {
+            switch (answers.choices){
                 case 'menu':
                     promptUser();
                     break;
@@ -122,12 +123,13 @@ function viewTitle() {
                 choices: [
                     {name:'Return to Main Menu',
                     value:'menu'},
-                    'Quit'
+                    {name:'Quit',
+                    value:'Quit'}
                 ]
             }
         ])
-        .then((answer) => {
-            switch (answer.choices){
+        .then((answers) => {
+            switch (answers.choices){
                 case 'menu':
                     promptUser();
                     break;
@@ -158,9 +160,9 @@ function viewEmployees() {
                 ]
             }
         ])
-        .then((answer) => {
-            console.log(answer)
-            switch (answer.choices) {
+        .then((answers) => {
+            console.log(answers)
+            switch (answers.choices) {
                 case 'menu':
                     promptUser();
                     break;
@@ -181,9 +183,9 @@ function addDepartment() {
         }
     ])
     .then(function (res) {
-        connection.query('INSERT INTO department(department_name) VALUES (?)',
-        [res.department_name]), 
-        function(err, res) {
+        const req = "INSERT INTO department(department_name) VALUES (?)"
+        db.query(req, [res.department_name], function(err, res) {
+            console.log("New Department added successfully");
             if (err) throw err;
             console.table(res);
             inquirer.prompt([
@@ -194,12 +196,13 @@ function addDepartment() {
                     choices: [
                         {name:'Return to Main Menu',
                         value:'menu'},
-                        'Quit'
+                        {name:'Quit',
+                        value:'Quit'}
                     ]
                 }
             ])
-            .then((answer) => {
-                switch (answer.choices){
+            .then((answers) => {
+                switch (answers.choices){
                     case 'menu':
                         promptUser();
                         break;
@@ -207,7 +210,7 @@ function addDepartment() {
                             Quit();
                 }
             })
-            }
+            })
     })
 }
 
@@ -231,8 +234,8 @@ function addTitle() {
         }
     ])
     .then(function (res) {
-        connection.query('INSERT INTO job_title(title, salary) VALUES (?,?)',
-        [res.title, res.salary]), 
+        connection.query('INSERT INTO job_title(title, salary, department_id) VALUES (?,?,?)',
+        [res.title, res.salary, res.department_id]), 
         function(err, res) {
             if (err) throw err;
             console.table(res);
@@ -244,12 +247,13 @@ function addTitle() {
                     choices: [
                         {name:'Return to Main Menu',
                         value:'menu'},
-                        'Quit'
+                        {name:'Quit',
+                        value:'Quit'}
                     ]
                 }
             ])
-            .then((answer) => {
-                switch (answer.choices){
+            .then((answers) => {
+                switch (answers.choices){
                     case 'menu':
                         promptUser();
                         break;
@@ -299,12 +303,13 @@ function addEmployee() {
                     choices: [
                         {name:'Return to Main Menu',
                         value:'menu'},
-                        'Quit'
+                        {name:'Quit',
+                        value:'Quit'}
                     ]
                 }
             ])
-            .then((answer) => {
-                switch (answer.choices){
+            .then((answers) => {
+                switch (answers.choices){
                     case 'menu':
                         promptUser();
                         break;
