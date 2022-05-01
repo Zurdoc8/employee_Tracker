@@ -15,7 +15,7 @@ VALUES
 ( "Sales Team Manager", 85000, 2),
 ( "Sales Specialist", 50000, 2),
 ( "Senior Software Engineer", 220000, 3),
-( "Junior Software Engineer", 650000, 3),
+( "Junior Software Engineer", 65000, 3),
 ( "Account Manager", 100000, 4),
 ( "Assistant Accountant", 70000, 4),
 ( "Legal Team Lead", 200000, 5),

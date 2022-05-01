@@ -1,15 +1,18 @@
 const inquirer = require('inquirer');
-// const mysql = require('mysql');
-// const mysql2 = require('mysql2');
-const constable = require('console.table');
-const connection = require('./config/connection');
+const db = require('./config/connection');
+const mysql = require('mysql');
+const { connection } = require ('./db');
 
-connection.connect((err) => {
-    if (err) throw error;
-    console.log('');
-
+db.connect(async function () {
     promptUser();
-});
+})
+
+// connection.connect((err) => {
+//     if (err) throw error;
+//     console.log('');
+
+//     promptUser();
+// });
 
 const promptUser = () => {
     inquirer.prompt([
@@ -29,7 +32,9 @@ const promptUser = () => {
         }
     ])
     .then ((answers) => {
-        switch (answers.choice) {
+        console.log(answers);
+        switch (answers.choices) {
+            
 
             case 'View Departments':
 
@@ -62,34 +67,39 @@ const promptUser = () => {
 
             case 'EXIT HERE':
 
-                exitHere();
+                Quit();
                 break;
+            
+            default: 
+            promptUser();
         }
     }
 )
 }
 
 function viewDepartments() {
+    console.log('error')
     const req = "SELECT * FROM department";
     db.query(req, function(err, res) {
         if (err) throw err;
         console.log("Viewing All Departments");
-        constable(res);
+        console.table(res);
         inquirer.prompt([
             {
                 type: 'list',
-                name: 'choice',
+                name: 'choices',
                 message: 'select an option',
                 choices: [
-                    'Return to Main Menu',
+                    {name:'Return to Main Menu',
+                    value:'menu'},
                     'Quit'
                 ]
             }
         ])
         .then((answer) => {
-            switch (answer.choice){
-                case 'Main Menu':
-                    start();
+            switch (answer.choices){
+                case 'menu':
+                    promptUser();
                     break;
                     case 'Quit':
                         Quit();
@@ -103,51 +113,56 @@ function viewTitle() {
     db.query(req, function(err, res) {
         if (err) throw err;
         console.log("Viewing All Titles");
-        constable(res);
+        console.table(res);
         inquirer.prompt([
             {
                 type: 'list',
-                name: 'choice',
+                name: 'choices',
                 message: 'select an option',
                 choices: [
-                    'Return to Main Menu',
+                    {name:'Return to Main Menu',
+                    value:'menu'},
                     'Quit'
                 ]
             }
         ])
         .then((answer) => {
-            switch (answer.choice){
-                case 'Main Menu':
-                    start();
+            switch (answer.choices){
+                case 'menu':
+                    promptUser();
                     break;
                     case 'Quit':
                         Quit();
             }
         })
+
     })
 }
 
 function viewEmployees() {
-    const req = "SELECT * FROM employees";
+    const req = "SELECT * FROM employee";
     db.query(req, function(err, res) {
         if (err) throw err;
         console.log("Viewing All Employees");
-        constable(res);
+        console.table(res);
         inquirer.prompt([
             {
                 type: 'list',
-                name: 'choice',
+                name: 'choices',
                 message: 'select an option',
                 choices: [
-                    'Return to Main Menu',
-                    'Quit'
+                    {name:'Return to Main Menu',
+                    value:'menu'},
+                    {name:'Quit',
+                    value:'Quit'}
                 ]
             }
         ])
         .then((answer) => {
-            switch (answer.choice){
-                case 'Main Menu':
-                    start();
+            console.log(answer)
+            switch (answer.choices) {
+                case 'menu':
+                    promptUser();
                     break;
                     case 'Quit':
                         Quit();
@@ -170,28 +185,29 @@ function addDepartment() {
         [res.department_name]), 
         function(err, res) {
             if (err) throw err;
-            constable(res);
+            console.table(res);
             inquirer.prompt([
                 {
                     type: 'list',
-                    name: 'choice',
+                    name: 'choices',
                     message: 'select an option',
                     choices: [
-                        'Return to Main Menu',
+                        {name:'Return to Main Menu',
+                        value:'menu'},
                         'Quit'
                     ]
                 }
             ])
             .then((answer) => {
-                switch (answer.choice){
-                    case 'Main Menu':
-                        start();
+                switch (answer.choices){
+                    case 'menu':
+                        promptUser();
                         break;
                         case 'Quit':
                             Quit();
                 }
             })
-        }
+            }
     })
 }
 
@@ -215,26 +231,27 @@ function addTitle() {
         }
     ])
     .then(function (res) {
-        connection.query('INSERT INTO job_title(title, salary, department_id) VALUES (?,?,?)',
-        [res.title, res.salary, res.department_id]), 
+        connection.query('INSERT INTO job_title(title, salary) VALUES (?,?)',
+        [res.title, res.salary]), 
         function(err, res) {
             if (err) throw err;
-            constable(res);
+            console.table(res);
             inquirer.prompt([
                 {
                     type: 'list',
-                    name: 'choice',
+                    name: 'choices',
                     message: 'select an option',
                     choices: [
-                        'Return to Main Menu',
+                        {name:'Return to Main Menu',
+                        value:'menu'},
                         'Quit'
                     ]
                 }
             ])
             .then((answer) => {
-                switch (answer.choice){
-                    case 'Main Menu':
-                        start();
+                switch (answer.choices){
+                    case 'menu':
+                        promptUser();
                         break;
                         case 'Quit':
                             Quit();
@@ -273,22 +290,23 @@ function addEmployee() {
         [res.first_name, res.last_name, res.job_title_id, res.manager_id]), 
         function(err, res) {
             if (err) throw err;
-            constable(res);
+            console.table(res);
             inquirer.prompt([
                 {
                     type: 'list',
                     name: 'choice',
                     message: 'select an option',
                     choices: [
-                        'Return to Main Menu',
+                        {name:'Return to Main Menu',
+                        value:'menu'},
                         'Quit'
                     ]
                 }
             ])
             .then((answer) => {
-                switch (answer.choice){
-                    case 'Main Menu':
-                        start();
+                switch (answer.choices){
+                    case 'menu':
+                        promptUser();
                         break;
                         case 'Quit':
                             Quit();
