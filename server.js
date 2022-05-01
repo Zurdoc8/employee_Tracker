@@ -1,18 +1,10 @@
 const inquirer = require('inquirer');
 const db = require('./config/connection');
-const mysql = require('mysql');
 const { connection } = require ('./db');
 
 db.connect(async function () {
     promptUser();
 })
-
-// connection.connect((err) => {
-//     if (err) throw error;
-//     console.log('');
-
-//     promptUser();
-// });
 
 const promptUser = () => {
     inquirer.prompt([
@@ -182,12 +174,12 @@ function addDepartment() {
             name: 'department_name'
         }
     ])
-    .then(function (res) {
+    .then(function (data) {
         const req = "INSERT INTO department(department_name) VALUES (?)"
-        db.query(req, [res.department_name], function(err, res) {
+        db.query(req, [data.department_name], function(err, res) {
             console.log("New Department added successfully");
             if (err) throw err;
-            console.table(res);
+            console.table(data);
             inquirer.prompt([
                 {
                     type: 'list',
@@ -210,7 +202,7 @@ function addDepartment() {
                             Quit();
                 }
             })
-            })
+        })
     })
 }
 
@@ -233,12 +225,12 @@ function addTitle() {
             name: 'department_id'
         }
     ])
-    .then(function (res) {
-        connection.query('INSERT INTO job_title(title, salary, department_id) VALUES (?,?,?)',
-        [res.title, res.salary, res.department_id]), 
+    .then(function (data) {
+        db.query('INSERT INTO job_title(title, salary, department_id) VALUES (?,?,?)',
+        [data.title, data.salary, data.department_id], 
         function(err, res) {
             if (err) throw err;
-            console.table(res);
+            console.table(data);
             inquirer.prompt([
                 {
                     type: 'list',
@@ -261,7 +253,7 @@ function addTitle() {
                             Quit();
                 }
             })
-        }
+        })
     })
 }
 
@@ -289,16 +281,16 @@ function addEmployee() {
             name: 'manager_id'
         }
     ])
-    .then(function (res) {
+    .then(function (data) {
         connection.query('INSERT INTO employee(first_name, last_name, job_title_id, manager_id) VALUES (?,?,?,?)',
-        [res.first_name, res.last_name, res.job_title_id, res.manager_id]), 
+        [data.first_name, data.last_name, data.job_title_id, data.manager_id], 
         function(err, res) {
             if (err) throw err;
-            console.table(res);
+            console.table(data);
             inquirer.prompt([
                 {
                     type: 'list',
-                    name: 'choice',
+                    name: 'choices',
                     message: 'select an option',
                     choices: [
                         {name:'Return to Main Menu',
@@ -317,7 +309,7 @@ function addEmployee() {
                             Quit();
                 }
             })
-        }
+        })
     })
 }
 
